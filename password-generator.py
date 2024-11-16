@@ -24,8 +24,51 @@ underscore = "_"
 space = " "
 
 password = ""
+tuplas = []
+
+print("Choose the words: 'Y' / 'N'")
+select_lowercase = str(input("abcdef...vwxy: : ")).upper()
+select_capital_letters = str(input("ABCDEF...VWXY: : ")).upper()
+select_numbers = str(input("0123456789: ")).upper()
+select_special = str(input("!@#$%^,.:?/: ")).upper()
+select_ISO8859 = str(input("¡¢£¤¥¦....üýþÿ: ")).upper()
+select_parenthesis = str(input("()[]{}: ")).upper()
+select_minus = str(input("-: ")).upper()
+select_underscore = str(input("_: ")).upper()
+select_space = str(input(" : ")).upper()
+
+if select_lowercase == 'Y':
+    tuplas.append(lowercase)
+    
+if select_capital_letters == 'Y':
+    tuplas.append(capital_letters)
+    
+if select_numbers == 'Y':
+    tuplas.append(numbers)
+    
+if select_special == 'Y':
+    tuplas.append(special)
+    
+if select_ISO8859 == 'Y':
+    tuplas.append(Special_ISO8859)
+    
+if select_parenthesis == 'Y':
+    tuplas.append(parenthesis)
+    
+if select_minus == 'Y':
+    tuplas.append(minus)
+    
+if select_underscore == 'Y':
+    tuplas.append(underscore)
+    
+if select_space == 'Y':
+    tuplas.append(space)
+    
+
+
 length = int(input("Length of the password: "))
 
 for i in range(length):
-    password += random.choice(Special_ISO8859)
+    password += random.choice(random.choice(tuplas))
 print(password)
+
