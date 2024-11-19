@@ -1,4 +1,6 @@
+import tkinter as tk
 import random
+import sys
 
 lowercase = ("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
              "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
@@ -23,52 +25,145 @@ minus = "-"
 underscore = "_"
 space = " "
 
-password = ""
-tuplas = []
+root = tk.Tk()
+root.title("PasswordGenerator") #Title
+root.geometry("370x270") #Size
+root.configure(bg="#1e1e1e")  # Dark background
+root.attributes("-alpha", 0.9) #Transparency
 
-print("Choose the words: 'Y' / 'N'")
-select_lowercase = str(input("abcdef...vwxy: : ")).upper()
-select_capital_letters = str(input("ABCDEF...VWXY: : ")).upper()
-select_numbers = str(input("0123456789: ")).upper()
-select_special = str(input("!@#$%^,.:?/: ")).upper()
-select_ISO8859 = str(input("¡¢£¤¥¦....üýþÿ: ")).upper()
-select_parenthesis = str(input("()[]{}: ")).upper()
-select_minus = str(input("-: ")).upper()
-select_underscore = str(input("_: ")).upper()
-select_space = str(input(" : ")).upper()
+check_style = {
+    "bg": "#1e1e1e",
+    "fg": "#bbbbbb",
+    "selectcolor": "#444444",
+    "activebackground": "#1e1e1e",
+    "activeforeground": "#ffffff",
+    "relief": tk.FLAT
+}
 
-if select_lowercase == 'Y':
-    tuplas.append(lowercase)
-    
-if select_capital_letters == 'Y':
-    tuplas.append(capital_letters)
-    
-if select_numbers == 'Y':
-    tuplas.append(numbers)
-    
-if select_special == 'Y':
-    tuplas.append(special)
-    
-if select_ISO8859 == 'Y':
-    tuplas.append(Special_ISO8859)
-    
-if select_parenthesis == 'Y':
-    tuplas.append(parenthesis)
-    
-if select_minus == 'Y':
-    tuplas.append(minus)
-    
-if select_underscore == 'Y':
-    tuplas.append(underscore)
-    
-if select_space == 'Y':
-    tuplas.append(space)
-    
+bnt_style = {
+    "bg": "#444444",
+    "fg": "#ffffff",
+    "relief": tk.FLAT
+}
+
+def exit_software():
+    sys.exit()
+
+def check_config():
+    length = int(length_txt.get())
+    password = ""
+    tuplas = []
+    if lowercase_var.get():
+        tuplas.append(lowercase)
+    if capital_letters_var.get():
+        tuplas.append(capital_letters)
+    if numbers_var.get():
+        tuplas.append(numbers)
+    if special_var.get():
+        tuplas.append(special)
+    if ISO8859_var.get():
+        tuplas.append(Special_ISO8859)
+    if parenthesis_var.get():
+        tuplas.append(parenthesis)
+    if minus_var.get():
+        tuplas.append(minus)
+    if underscore_var.get():
+        tuplas.append(underscore)
+    if space_var.get():
+        tuplas.append(space)
+        
+    for i in range(length):
+        password += random.choice(random.choice(tuplas))
+    length_block.config(state="normal") #Unlock TexBox
+    length_block.config(width= length + (3)) #length of Texbox
+    length_block.delete(0, tk.END) #Clear TexBox
+    length_block.insert(0, password) #Insert Password
+    length_block.config(state="readonly", fg="black") #Block TexBox
+
+lowercase_var = tk.IntVar(value=1)
+capital_letters_var = tk.IntVar(value=1)
+numbers_var = tk.IntVar(value=1)
+special_var = tk.IntVar(value=1)
+ISO8859_var = tk.IntVar(value=1)
+parenthesis_var = tk.IntVar(value=1)
+minus_var = tk.BooleanVar()
+underscore_var = tk.BooleanVar()
+space_var = tk.IntVar(value=1)
+
+lowercase_check = tk.Checkbutton(root, text="abcdef...vwxy", variable=lowercase_var, **check_style)
+capital_letters_check = tk.Checkbutton(root, text="ABCDEF...VWXY", variable=capital_letters_var, **check_style)
+numbers_check = tk.Checkbutton(root, text="0123456789", variable=numbers_var, **check_style)
+special_check = tk.Checkbutton(root, text="!@#$%^,.:?/", variable=special_var, **check_style)
+ISO8859_check = tk.Checkbutton(root, text="¡¢£¤¥¦....üýþÿ", variable=ISO8859_var, **check_style)
+parenthesis_check = tk.Checkbutton(root, text="()[]{}", variable=parenthesis_var, **check_style)
+minus_check = tk.Checkbutton(root, text="-", variable=minus_var, **check_style)
+underscore_check = tk.Checkbutton(root, text="_", variable=underscore_var, **check_style)
+space_check = tk.Checkbutton(root, text=" (space)", variable=space_var, **check_style)
+bnt_start = tk.Button(root, text="Create", command=check_config, **bnt_style)
+bnt_test = tk.Button(root, text="Exit", command=exit_software, **bnt_style)
+
+# Label Style
+label_style = {
+    "bg": "#1e1e1e",  # Dark background
+    "fg": "#bbbbbb",  # Light gray text
+    "font": ("Arial", 12),  # Font
+    "relief": tk.FLAT  # Flat border
+}
+
+#Label
+text_label = tk.Label(root, text="Select u config", **label_style)
+length_label = tk.Label(root, text="Length of the password", **label_style)
 
 
-length = int(input("Length of the password: "))
+#Texbox Style
+entry_style = {
+    "bg": "#1e1e1e",
+    "fg": "#bbbbbb",
+    "width": 3,
+    "relief": tk.FLAT,
+    "highlightbackground": "#444444",
+    "highlightthickness": 1 
+}
 
-for i in range(length):
-    password += random.choice(random.choice(tuplas))
-print(password)
+# Texbox for length
+length_txt = tk.Entry(root, **entry_style)
+length_txt.insert(0, 30)
+# Texbox for copy
+length_block = tk.Entry(root, **entry_style)
+length_block.config(state="readonly") #Block, Only read
+
+
+# List of Widgets with values of padx, pady and column (widget, padx, pady, column)
+# Tupla of Widgets for first column
+column1_widgets = [
+    (text_label, 10, 0, 0),(lowercase_check, 10, 0, 0), (capital_letters_check, 10, 0, 0), (numbers_check, 10, 0, 0),
+    (special_check, 10, 0, 0), (ISO8859_check, 10, 0, 0), (parenthesis_check, 10, 0, 0),
+    (minus_check, 10, 0, 0), (underscore_check, 10, 0, 0), (space_check, 10, 0, 0)
+]
+
+# Tupla of Widgets for second column
+column2_widgets = [
+    (length_label, 10, 2, 1), (length_txt, 10, 2, 1), (length_block, 10, 2 ,1),
+    (bnt_start, 10, 2, 1), (bnt_test, 10, 2, 1)
+]
+
+# Variable for the auto increment of row
+row_index = 0
+
+# Configuration of the GRID for widgets of first column
+for widget, padx_value, pady_value, column_value in column1_widgets:
+    widget.grid(row=row_index, column=column_value, sticky='w', padx=padx_value, pady=pady_value)
+    row_index += 1  # Autoincrement of index row
+
+# Restart of index of row for second column
+row_index = 0
+
+# Configuration of the GRID for widgets of second column
+for widget, padx_value, pady_value, column_value in column2_widgets:
+    widget.grid(row=row_index, column=column_value, sticky='w', padx=padx_value, pady=pady_value)
+    row_index += 1  # Autoincrement of index row
+
+root.mainloop()
+
+
 
