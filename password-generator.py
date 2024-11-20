@@ -1,6 +1,10 @@
 import tkinter as tk
 import random
 import sys
+import pyperclip
+
+password = ""
+tuplas = []
 
 lowercase = ("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
              "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
@@ -46,13 +50,21 @@ bnt_style = {
     "relief": tk.FLAT
 }
 
-def exit_software():
-    sys.exit()
+# Password Generator
+def password_generator(password, tuplas):
+    for i in range(int(length_txt.get())):
+        password += random.choice(random.choice(tuplas))
+    return password
 
-def check_config():
-    length = int(length_txt.get())
-    password = ""
-    tuplas = []
+def change_length_block(password):
+    length_block.config(state="normal") #Unlock TexBox
+    length_block.config(width= int(length_txt.get()) + (3)) #length of Texbox
+    length_block.delete(0, tk.END) #Clear TexBox
+    length_block.insert(0, password) #Insert Password
+    length_block.config(state="readonly", fg="black") #Block TexBox
+
+#random tupla generator
+def random_tupla(tuplas):  
     if lowercase_var.get():
         tuplas.append(lowercase)
     if capital_letters_var.get():
@@ -72,13 +84,13 @@ def check_config():
     if space_var.get():
         tuplas.append(space)
         
-    for i in range(length):
-        password += random.choice(random.choice(tuplas))
-    length_block.config(state="normal") #Unlock TexBox
-    length_block.config(width= length + (3)) #length of Texbox
-    length_block.delete(0, tk.END) #Clear TexBox
-    length_block.insert(0, password) #Insert Password
-    length_block.config(state="readonly", fg="black") #Block TexBox
+def clipboard():
+    pyperclip.copy(length_block.get())
+    
+def check_config(password, tuplas):
+    random_tupla(tuplas)
+    password = password_generator(password, tuplas)
+    change_length_block(password)
 
 lowercase_var = tk.IntVar(value=1)
 capital_letters_var = tk.IntVar(value=1)
@@ -99,8 +111,8 @@ parenthesis_check = tk.Checkbutton(root, text="()[]{}", variable=parenthesis_var
 minus_check = tk.Checkbutton(root, text="-", variable=minus_var, **check_style)
 underscore_check = tk.Checkbutton(root, text="_", variable=underscore_var, **check_style)
 space_check = tk.Checkbutton(root, text=" (space)", variable=space_var, **check_style)
-bnt_start = tk.Button(root, text="Create", command=check_config, **bnt_style)
-bnt_test = tk.Button(root, text="Exit", command=exit_software, **bnt_style)
+bnt_start = tk.Button(root, text="Create", command=lambda: check_config(password, tuplas), **bnt_style)
+bnt_test = tk.Button(root, text="COPY", command=clipboard, **bnt_style)
 
 # Label Style
 label_style = {
