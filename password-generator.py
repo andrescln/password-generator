@@ -39,7 +39,7 @@ root.attributes("-alpha", 0.9) #Transparency
 # Password Generator
 def password_generator(password, tuples):
     for i in range(int(length_txt.get())):
-        password += random.choice(random.choice(tuples))
+        password += random.choice(tuples)
     return password
 
 def change_length_block(password):
@@ -50,25 +50,26 @@ def change_length_block(password):
     length_block.config(state="readonly", fg="black") #Block TexBox
 
 #random Tuple generator
-def random_tuple(tuples):  
+def random_tuple(tuples):
+    tuples.clear()
     if lowercase_var.get():
-        tuples.append(lowercase)
+        tuples.extend(lowercase)
     if capital_letters_var.get():
-        tuples.append(capital_letters)
+        tuples.extend(capital_letters)
     if numbers_var.get():
-        tuples.append(numbers)
+        tuples.extend(numbers)
     if special_var.get():
-        tuples.append(special)
+        tuples.extend(special)
     if ISO8859_var.get():
-        tuples.append(Special_ISO8859)
+        tuples.extend(Special_ISO8859)
     if parenthesis_var.get():
-        tuples.append(parenthesis)
+        tuples.extend(parenthesis)
     if minus_var.get():
-        tuples.append(minus)
+        tuples.extend(minus)
     if underscore_var.get():
-        tuples.append(underscore)
+        tuples.extend(underscore)
     if space_var.get():
-        tuples.append(space)
+        tuples.extend(space)
         
 def clipboard():
     pyperclip.copy(length_block.get())
